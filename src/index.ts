@@ -3,11 +3,17 @@ require('dotenv').config();
 
 import { Telegraf } from 'telegraf';
 
+import { start } from './Bot/Commands/Wrapper';
+
 const bot = new Telegraf(String(process.env.BOT_TOKEN));
 
-bot.start((ctx) => ctx.reply('Welcome'));
+bot.start(start);
 
 bot.on('callback_query', (ctx) => {
+    if (ctx.callbackQuery) {
+        console.log(ctx.callbackQuery.from);
+    }
+
     if (ctx.callbackQuery && ctx.callbackQuery.id) ctx.answerCbQuery(String(ctx.callbackQuery.id));
 });
 
