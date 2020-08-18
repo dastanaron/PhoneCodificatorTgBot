@@ -1,0 +1,41 @@
+{
+  "name": "phone-codificator-tg-bot",
+  "version": "0.0.1",
+  "description": "Analog of the PhoneCodificator programm for the telegram",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "yarn run clear-build && yarn run build && node ./dist/index.js",
+    "daemon": "nodemon",
+    "build": "tsc",
+    "test": "jest",
+    "clear-build": "rm -rf ./build",
+    "consume-parser-task-dev": "ts-node ./src/app/Commands/ConsumerParserTasks.ts",
+    "consume-parser-task": "yarn run build && node ./build/app/Commands/ConsumerParserTasks.js",
+    "eslint-check": "eslint 'src/**/*.{ts,tsx}'",
+    "prettier-fix": "prettier ./src/* --write"
+  },
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "telegraf": "^3.38.0"
+  },
+  "devDependencies": {
+    "@types/cheerio": "^0.22.18",
+    "@types/jest": "26.0.3",
+    "@types/node": "14.0.14",
+    "@types/node-fetch": "^2.5.7",
+    "@typescript-eslint/eslint-plugin": "^3.4.0",
+    "@typescript-eslint/parser": "^3.4.0",
+    "eslint": "^7.3.1",
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-import": "^2.21.2",
+    "eslint-plugin-prettier": "^3.1.4",
+    "jest": "26.1.0",
+    "nodemon": "^2.0.4",
+    "prettier": "^2.0.5",
+    "ts-jest": "26.1.1",
+    "ts-node": "^8.10.1",
+    "typescript": "^3.9.5"
+  }
+}
