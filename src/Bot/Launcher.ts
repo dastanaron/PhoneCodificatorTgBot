@@ -3,19 +3,24 @@ import { Telegraf, Context } from 'telegraf';
 
 import { start } from './Commands/Wrapper';
 import { handleMessage } from './MessageHandlers/Wrapper';
-import DatabaseConnection from '../Components/Phone/DatabaseConnection';
+import DatabaseConnection from '../Components/DataBaseConnection';
 
 export default class Launcher {
     protected bot: Telegraf<Context>;
     protected phonesDBConnection: DatabaseConnection;
+    protected botDBConnection: DatabaseConnection;
 
-    constructor(botToken: string, phonesDBConnection: DatabaseConnection) {
+    constructor(botToken: string, phonesDBConnection: DatabaseConnection, botDBConnection: DatabaseConnection) {
         this.bot = new Telegraf(botToken);
         this.phonesDBConnection = phonesDBConnection;
+        this.botDBConnection = botDBConnection;
     }
 
     async run(): Promise<void> {
-        this.bot.start(start);
+        this.bot.start((context) => {
+            start(context, this.botDBConnection);
+        });
+
         this.configure();
         this.runHandlers();
 
@@ -27,7 +32,7 @@ export default class Launcher {
     private configure(): void {
         if (process.env.APP_ENV === 'production') {
             this.bot.telegram.setWebhook(String(process.env.WEBHOOK_URL));
-            this.bot.startWebhook(String(process.env.WEBHOOK_PATH), null, Number(process.env.INTERNAL_PORT))
+            this.bot.startWebhook(String(process.env.WEBHOOK_PATH), null, Number(process.env.INTERNAL_PORT));
         }
     }
 

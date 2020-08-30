@@ -1,7 +1,7 @@
 import BetterSqlite3, { Database } from 'better-sqlite3';
-import { DataBaseConnection } from '../../Contracts/DataBaseConnection';
+import { DataBaseConnection as ConnectionInterface } from '../Contracts/DataBaseConnection';
 
-export default class PhoneDatabaseConnection implements DataBaseConnection {
+export default class DatabaseConnection implements ConnectionInterface {
     protected db: Database;
 
     constructor(databasePath: string) {
