@@ -23,26 +23,9 @@ export default class Launcher {
 
     private configure(): void {
         if (process.env.APP_ENV === 'production') {
-            const tlsOptions = {
-                key: fs.readFileSync(String(process.env.HTTPS_KEY)),
-                cert: fs.readFileSync(String(process.env.HTTPS_CERT)),
-                ca: [],
-            };
-            const caCertifies = String(process.env.HTTPS_CA);
-            if (caCertifies.search(/\,/) > -1) {
-                const paths = caCertifies.split(',');
-                for (const path of paths) {
-                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                    // @ts-ignore
-                    tlsOptions.ca.push(fs.readFileSync(path));
-                }
-            } else {
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
-                tlsOptions.ca.push(fs.readFileSync(caCertifies));
-            }
             this.bot.telegram.setWebhook(
                 String(process.env.WEBHOOK_URL) +
+                    ':' +
                     String(process.env.WEBHOOK_PORT) +
                     '/' +
                     String(process.env.WEBHOOK_PATH),
@@ -50,7 +33,7 @@ export default class Launcher {
                     source: String(process.env.HTTPS_CERT),
                 },
             );
-            this.bot.startWebhook(String(process.env.WEBHOOK_PATH), tlsOptions, Number(process.env.WEBHOOK_PORT));
+            this.bot.startWebhook(String(process.env.WEBHOOK_PATH), null, Number(process.env.WEBHOOK_PORT))
         }
     }
 
