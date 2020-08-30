@@ -1,5 +1,5 @@
 import { TelegrafContext } from 'telegraf/typings/context';
-import DatabaseConnection from '../../Components/Phone/DatabaseConnection';
+import DatabaseConnection from '../../Components/DataBaseConnection';
 
 export interface MessageHandler {
     isValid(context: TelegrafContext): boolean;
