@@ -23,17 +23,8 @@ export default class Launcher {
 
     private configure(): void {
         if (process.env.APP_ENV === 'production') {
-            this.bot.telegram.setWebhook(
-                String(process.env.WEBHOOK_URL) +
-                    ':' +
-                    String(process.env.WEBHOOK_PORT) +
-                    '/' +
-                    String(process.env.WEBHOOK_PATH),
-                {
-                    source: String(process.env.HTTPS_CERT),
-                },
-            );
-            this.bot.startWebhook(String(process.env.WEBHOOK_PATH), null, Number(process.env.WEBHOOK_PORT))
+            this.bot.telegram.setWebhook(String(process.env.WEBHOOK_URL));
+            this.bot.startWebhook(String(process.env.WEBHOOK_PATH), null, Number(process.env.INTERNAL_PORT))
         }
     }
 
