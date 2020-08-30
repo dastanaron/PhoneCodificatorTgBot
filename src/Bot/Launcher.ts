@@ -18,7 +18,10 @@ export default class Launcher {
         this.bot.start(start);
         this.configure();
         this.runHandlers();
-        await this.bot.launch();
+
+        if (process.env.APP_ENV !== 'production') {
+            await this.bot.launch();
+        }
     }
 
     private configure(): void {
