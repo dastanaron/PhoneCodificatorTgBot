@@ -42,7 +42,6 @@ export default class Launcher {
     private runHandlers(): void {
         this.bot.on('callback_query', (ctx) => {
             if (ctx.callbackQuery) {
-                console.log(ctx.callbackQuery.data);
                 switch (ctx.callbackQuery.data) {
                     case 'usersInfo':
                         const botDBComponent = new BotDatabaseComponent(this.botDBConnection);
