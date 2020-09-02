@@ -25,7 +25,15 @@ export default class UserRepository {
             VALUES
             (?, ?, ?, ?, ?, ?, ?)
         `);
-        stmt.run(user.tgUserId, user.username, user.firstName, user.lastName, Number(user.isBot), user.languageCode, user.createdAt.toISOString());
+        stmt.run(
+            user.tgUserId,
+            user.username,
+            user.firstName,
+            user.lastName,
+            Number(user.isBot),
+            user.languageCode,
+            user.createdAt.toISOString(),
+        );
     }
 
     public updateModel(user: User): void {
