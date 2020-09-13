@@ -24,5 +24,20 @@ export function start(context: TelegrafContext, botDatabase: DataBaseConnection)
 
     answerMessage += `\nЯ могу определять оператора и регион по номеру телефона, пришлите мне номер в любом формате`;
 
-    context.reply(answerMessage);
+    context.reply(answerMessage, {
+        reply_markup: {
+            inline_keyboard: [
+                [
+                    {
+                        text: '👨👩🏻‍🦰 Пользователи',
+                        callback_data: 'usersInfo',
+                    },
+                    {
+                        text: '🗄 База данных',
+                        callback_data: 'dbInfo',
+                    },
+                ],
+            ],
+        },
+    });
 }

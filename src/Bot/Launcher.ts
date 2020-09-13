@@ -4,9 +4,8 @@ import { Telegraf, Context } from 'telegraf';
 import { start } from './Commands/Wrapper';
 import { handleMessage } from './MessageHandlers/Wrapper';
 import DatabaseConnection from '../Components/DataBaseConnection';
-import BotDatabaseComponent from '../Components/BotDatabase/BotDatabaseComponent';
-import PhoneComponent from '../Components/Phone/PhoneComponent';
 import Utils from '../Services/Utils';
+import CallbackQueriesHandlerWrapper from './CallbackQueries/Wrapper';
 
 export default class Launcher {
     protected bot: Telegraf<Context>;
@@ -41,21 +40,9 @@ export default class Launcher {
 
     private runHandlers(): void {
         this.bot.on('callback_query', (ctx) => {
-            if (ctx.callbackQuery) {
-                switch (ctx.callbackQuery.data) {
-                    case 'usersInfo':
-                        const botDBComponent = new BotDatabaseComponent(this.botDBConnection);
-                        const usersCount = botDBComponent.user.getUsersCount();
-                        ctx.reply(`💁 Бота используют ${usersCount} пользователей`);
-                        break;
-                    case 'dbInfo':
-                        const phoneComponent = new PhoneComponent(this.phonesDBConnection);
-                        const recordsCount = Utils.number.divideIntoBits(phoneComponent.getCountRecords());
-                        ctx.reply(`📲 В базе ${recordsCount} известных диапазонов номеров`);
-                        break;
-                }
-            }
+            CallbackQueriesHandlerWrapper.run(ctx, this.phonesDBConnection, this.botDBConnection);
 
+            //temp debug information
             if (ctx.callbackQuery && ctx.callbackQuery.id) ctx.answerCbQuery(String(ctx.callbackQuery.id));
         });
 
@@ -63,7 +50,7 @@ export default class Launcher {
             ctx.reply('inline_query');
         });
 
-        this.bot.hears(['info', 'инфо'], (ctx) =>
+        this.bot.hears(['info', 'инфо', 'Info', 'Инфо'], (ctx) =>
             ctx.getChat().then((res) => {
                 ctx.reply('Какая вам нужна информация?', {
                     reply_markup: {
